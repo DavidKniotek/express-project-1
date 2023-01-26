@@ -19,7 +19,7 @@ voteRouter
 
     .get('/:voteResult', (req, res) => {
 
-        if (isIpAlreadyVoted.check(req.ip)) {
+        if (!isIpAlreadyVoted.check(req.ip)) {
             res.status(403).send('You already have voted in this survey!');
             return;
         }
