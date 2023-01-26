@@ -2,27 +2,28 @@ const express = require('express');
 const voteRouter = express.Router();
 const INFO = 'Thank you for your vote!';
 
-let voteForYes = 0;
-let voteForNo = 0;
+const votes = {
+    yes: 0,
+    no: 0,
+};
 
 voteRouter
-    .get('/yes', (req, res) => {
-        res.send(INFO);
-        voteForYes++;
-    })
-
-    .get('/no', (req, res) => {
-        res.send(INFO);
-        voteForNo++;
-    })
 
     .get('/check', (req, res) => {
-        try {
-            res.send(`Votes for YES: ${voteForYes}, votes for NO: ${voteForNo}`);
-        } catch (err) {
-            res.send('No votes!');
-        }
+        const checkInfo = Object.entries(votes).map(([name, votesAmount]) => `Votes on ${name}: ${votesAmount}.`).join('<br>');
+        res.send(checkInfo);
     })
+
+    .get('/:voteResult', (req, res) => {
+        const {voteResult} = req.params;
+        if (typeof votes[voteResult] === 'undefined') {
+            votes[voteResult] = 0;
+        }
+
+        votes[voteResult]++;
+
+        res.send(INFO);
+    });
 
 
 
