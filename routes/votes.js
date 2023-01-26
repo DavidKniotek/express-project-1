@@ -2,25 +2,25 @@ const express = require('express');
 const voteRouter = express.Router();
 const INFO = 'Thank you for your vote!';
 
-const btn = document.querySelector('button');
-let counter;
-btn.addEventListener('click', () => {
-    counter++;
-})
+let voteForYes = 0;
+let voteForNo = 0;
+
 voteRouter
-    .get('/votes/set/:yes', (req, res) => {
+    .get('/yes', (req, res) => {
         res.send(INFO);
+        voteForYes++;
     })
 
-    .get('votes/set/:no', (req, res) => {
+    .get('/no', (req, res) => {
         res.send(INFO);
+        voteForNo++;
     })
 
-    .get('votes/check', (req, res) => {
+    .get('/check', (req, res) => {
         try {
-            res.send(`Scores: ${counter}`);
+            res.send(`Votes for YES: ${voteForYes}, votes for NO: ${voteForNo}`);
         } catch (err) {
-            res.send('No scores!');
+            res.send('No votes!');
         }
     })
 
